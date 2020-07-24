@@ -1,3 +1,6 @@
+# Company Logo - Hacker Rank Challenge: 
+# https://allhackerranksolutions.blogspot.com/2019/08/company-logo-hacker-rank-solution.html#:~:text=August%201%2C%202019-,Company%20Logo%20%2D%20Hacker%20Rank%20Solution,logos%20based%20on%20this%20condition.
+
 from itertools import groupby
 from functools import reduce
 from typing import Iterator
