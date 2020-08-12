@@ -32,7 +32,6 @@ class World:
     cols: int = 12
     bg_color: int = 255
     p: float = 0.33
-    cells: set = field(default_factory=set)
 
 
 @ dataclass
@@ -96,12 +95,14 @@ def draw_cell(cell):
     if cell.alive:
         fill(cell.color)
         eval(cell.shape_func)
+    return cell
 
 
 def transmit_livelihood(cell):
     if cell.alive:
         for pos in cell.neighborhood:
             cells[(pos)].neighbors += 1
+    return cell
 
 
 def next_generation(cell):
@@ -115,6 +116,8 @@ def next_generation(cell):
 
 
 cells = {}
+setup_pipeline = compose(generate_coords, spawn_cell)
+draw_pipeline = compose(next_generation, transmit_livelihood, draw_cell)
 
 
 def setup():
@@ -122,17 +125,14 @@ def setup():
     title(Window.title)
 
     cell = save_cell()
-    pipeline = compose(generate_coords, spawn_cell)
-    pipeline(cell)
+    setup_pipeline(cell)
 
 
 def draw():
     background(Window.bg_color)
 
     for cell in cells.values():
-        draw_cell(cell)
-        transmit_livelihood(cell)
-        next_generation(cell)
+        draw_pipeline(cell)
 
 
 if __name__ == '__main__':
